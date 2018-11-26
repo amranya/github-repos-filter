@@ -48,8 +48,6 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.RepoViewHold
                 .resize(60, 60)
                 .placeholder(R.drawable.avatar)
                 .into(holder.UserAvatar);
-
-
     }
 
     @Override
