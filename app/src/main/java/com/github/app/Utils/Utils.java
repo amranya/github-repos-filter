@@ -20,7 +20,7 @@ import javax.net.ssl.SSLContext;
 
 public class Utils {
 
-    public static String dateBefore(int days){
+    public static String dateBefore(int days) {
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
@@ -35,9 +35,10 @@ public class Utils {
 
     /**
      * Initialize SSL
+     *
      * @param mContext
      */
-    public static void initializeSSLContext(Context mContext){
+    public static void initializeSSLContext(Context mContext) {
         try {
             SSLContext.getInstance("TLSv1.2");
         } catch (NoSuchAlgorithmException e) {

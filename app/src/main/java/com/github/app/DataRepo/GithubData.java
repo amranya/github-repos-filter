@@ -2,7 +2,6 @@ package com.github.app.DataRepo;
 
 
 import android.content.Context;
-import android.graphics.Movie;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -37,7 +36,7 @@ public class GithubData {
     private static int page = 1;
 
 
-    public static  void getMostStarredRepos(final Context ctx, final ReposAdapter adapter){
+    public static void getMostStarredRepos(final Context ctx, final ReposAdapter adapter) {
 
         adapter.updateList(repos);
         Handler handler = new Handler();
@@ -64,14 +63,14 @@ public class GithubData {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        if(response != null){
+                        if (response != null) {
 
                             Toast.makeText(ctx, "page number: " + String.valueOf(page), Toast.LENGTH_SHORT).show();
 
                             repos.remove(repos.size() - 1);
                             adapter.notifyItemRemoved(repos.size());
 
-                            try{
+                            try {
 
                                 JSONArray reposArray = response.getJSONArray("items");
 
@@ -96,13 +95,13 @@ public class GithubData {
 
                                 page++;
 
-                            }catch (JSONException e) {
+                            } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
+                        } else {
+                            Toast.makeText(ctx, "no more data to display", Toast.LENGTH_SHORT).show();
                         }
-
-                        else {Toast.makeText(ctx, "no more data to display", Toast.LENGTH_SHORT).show();}
 
                     }
                 }, new Response.ErrorListener() {
@@ -113,7 +112,6 @@ public class GithubData {
         });
 
         queue.add(jsonObjectRequest);
-
 
 
     }

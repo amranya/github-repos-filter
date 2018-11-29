@@ -36,12 +36,12 @@ public class DataTest {
 
                 //populating adapter test
 
-                for(int i=0;i<10;i++){
+                for (int i = 0; i < 10; i++) {
 
                     GithubRepo repo = new GithubRepo();
                     repo.setRepoName("repo" + i + "page" + page);
                     repo.setRepoDescription("repo desc" + i);
-                    repo.setStarsNumber(""+ i);
+                    repo.setStarsNumber("" + i);
                     repo.setUserName("user" + i);
                     repo.setUserAvatar("http://i.imgur.com/DvpvklR.png");
 

@@ -1,7 +1,6 @@
 package com.github.app.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.app.Model.GithubRepo;
 import com.github.app.R;
@@ -22,7 +20,7 @@ import java.util.List;
 
 public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final int VIEW_TYPE_ITEM=0, VIEW_TYPE_LOADING=1;
+    private final int VIEW_TYPE_ITEM = 0, VIEW_TYPE_LOADING = 1;
     private Context context;
     private List<GithubRepo> repos;
 
@@ -34,22 +32,20 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public int getItemViewType(int position) {
 
-        return repos.get(position) == null ? VIEW_TYPE_LOADING:VIEW_TYPE_ITEM;
+        return repos.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
 
-        if(viewType == VIEW_TYPE_ITEM){
+        if (viewType == VIEW_TYPE_ITEM) {
 
             LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.github_view, parent, false);
             return new RepoViewHolder(view);
 
-        }
-
-        else if(viewType == VIEW_TYPE_LOADING){
+        } else if (viewType == VIEW_TYPE_LOADING) {
 
             LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.progress_bar, parent, false);
@@ -65,7 +61,7 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
 
-        if(holder instanceof RepoViewHolder){
+        if (holder instanceof RepoViewHolder) {
 
             RepoViewHolder repoViewHolder = (RepoViewHolder) holder;
 
@@ -80,9 +76,7 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     .placeholder(R.drawable.avatar)
                     .into(repoViewHolder.UserAvatar);
 
-        }
-
-        else if(holder instanceof LoadingHolder){
+        } else if (holder instanceof LoadingHolder) {
 
             LoadingHolder loadingHolder = (LoadingHolder) holder;
 
@@ -92,7 +86,6 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
 
-
     }
 
     @Override
@@ -100,7 +93,7 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return repos.size();
     }
 
-    public void updateList(List<GithubRepo> list){
+    public void updateList(List<GithubRepo> list) {
 
         repos = list;
 

@@ -1,26 +1,19 @@
 package com.github.app.Views;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.AbsListView;
-import com.android.volley.RequestQueue;
+
 import com.github.app.Adapter.ReposAdapter;
-import com.github.app.DataRepo.DataTest;
 import com.github.app.DataRepo.GithubData;
 import com.github.app.Model.GithubRepo;
 import com.github.app.R;
 import com.github.app.Utils.Utils;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.security.ProviderInstaller;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.net.ssl.SSLContext;
 
 public class Main extends AppCompatActivity {
 
@@ -51,8 +44,7 @@ public class Main extends AppCompatActivity {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-                {
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                     isScrolling = true;
                 }
             }
@@ -64,8 +56,7 @@ public class Main extends AppCompatActivity {
                 totalItems = manager.getItemCount();
                 scrollOutItems = manager.findFirstVisibleItemPosition();
 
-                if(isScrolling && (currentItems + scrollOutItems == totalItems))
-                {
+                if (isScrolling && (currentItems + scrollOutItems == totalItems)) {
                     isScrolling = false;
                     getData();
 
@@ -75,7 +66,7 @@ public class Main extends AppCompatActivity {
 
     }
 
-    public void getData(){
+    public void getData() {
 
         GithubData.getMostStarredRepos(this, adapter);
         //DataTest.getDataTest(this, adapter);
