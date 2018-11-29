@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.app.Model.GithubRepo;
 import com.github.app.R;
@@ -18,8 +20,9 @@ import com.squareup.picasso.Picasso;
  */
 import java.util.List;
 
-public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.RepoViewHolder> {
+public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private final int VIEW_TYPE_ITEM=0, VIEW_TYPE_LOADING=1;
     private Context context;
     private List<GithubRepo> repos;
 
@@ -29,30 +32,78 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.RepoViewHold
     }
 
     @Override
-    public RepoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.github_view, parent, false);
-        return new RepoViewHolder(view);
+    public int getItemViewType(int position) {
+
+        return repos.get(position) == null ? VIEW_TYPE_LOADING:VIEW_TYPE_ITEM;
     }
 
     @Override
-    public void onBindViewHolder(ReposAdapter.RepoViewHolder holder, int position) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        GithubRepo repo = repos.get(position);
-        holder.RepoName.setText(repo.getRepoName());
-        holder.RepoDescription.setText(repo.getRepoDescription());
-        holder.RepoStars.setText(repo.getStarsNumber());
-        holder.UserName.setText(repo.getUserName());
-        Picasso.get()
-                .load(repo.getUserAvatar())
-                .resize(60, 60)
-                .placeholder(R.drawable.avatar)
-                .into(holder.UserAvatar);
+
+        if(viewType == VIEW_TYPE_ITEM){
+
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View view = inflater.inflate(R.layout.github_view, parent, false);
+            return new RepoViewHolder(view);
+
+        }
+
+        else if(viewType == VIEW_TYPE_LOADING){
+
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View view = inflater.inflate(R.layout.progress_bar, parent, false);
+            return new LoadingHolder(view);
+
+        }
+
+        return null;
+
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+
+        if(holder instanceof RepoViewHolder){
+
+            RepoViewHolder repoViewHolder = (RepoViewHolder) holder;
+
+            GithubRepo repo = repos.get(position);
+            repoViewHolder.RepoName.setText(repo.getRepoName());
+            repoViewHolder.RepoDescription.setText(repo.getRepoDescription());
+            repoViewHolder.RepoStars.setText(repo.getStarsNumber());
+            repoViewHolder.UserName.setText(repo.getUserName());
+            Picasso.get()
+                    .load(repo.getUserAvatar())
+                    .resize(60, 60)
+                    .placeholder(R.drawable.avatar)
+                    .into(repoViewHolder.UserAvatar);
+
+        }
+
+        else if(holder instanceof LoadingHolder){
+
+            LoadingHolder loadingHolder = (LoadingHolder) holder;
+
+            loadingHolder.progressBar.setIndeterminate(true);
+
+
+        }
+
+
+
     }
 
     @Override
     public int getItemCount() {
         return repos.size();
+    }
+
+    public void updateList(List<GithubRepo> list){
+
+        repos = list;
+
     }
 
     public class RepoViewHolder extends RecyclerView.ViewHolder {
@@ -67,6 +118,17 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.RepoViewHold
             RepoStars = (TextView) itemView.findViewById(R.id.repoStarsView);
             UserName = (TextView) itemView.findViewById(R.id.userNameView);
             UserAvatar = (ImageView) itemView.findViewById(R.id.avatarView);
+
+        }
+    }
+
+    public class LoadingHolder extends RecyclerView.ViewHolder {
+
+        ProgressBar progressBar;
+
+        public LoadingHolder(View itemView) {
+            super(itemView);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
 
         }
     }

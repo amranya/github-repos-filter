@@ -1,18 +1,26 @@
 package com.github.app.Views;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.AbsListView;
+import com.android.volley.RequestQueue;
 import com.github.app.Adapter.ReposAdapter;
 import com.github.app.DataRepo.DataTest;
+import com.github.app.DataRepo.GithubData;
 import com.github.app.Model.GithubRepo;
 import com.github.app.R;
-
-
+import com.github.app.Utils.Utils;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.security.ProviderInstaller;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.net.ssl.SSLContext;
 
 public class Main extends AppCompatActivity {
 
@@ -24,24 +32,21 @@ public class Main extends AppCompatActivity {
     boolean isScrolling = false;
     int currentItems, totalItems, scrollOutItems;
 
-    int page;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycler_view);
 
-        page = 0;
+        Utils.initializeSSLContext(this);
 
         recyclerView = findViewById(R.id.my_recycler_view);
         manager = new LinearLayoutManager(this);
+        adapter = new ReposAdapter(this, repos);
 
         getData();
 
-        adapter = new ReposAdapter(this, repos);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -63,23 +68,18 @@ public class Main extends AppCompatActivity {
                 {
                     isScrolling = false;
                     getData();
-                    adapter.notifyItemInserted(repos.size() - 1);
+
                 }
             }
         });
 
-
     }
-
 
     public void getData(){
 
-        repos = DataTest.getDataTest(page);
-        page++;
-
+        GithubData.getMostStarredRepos(this, adapter);
+        //DataTest.getDataTest(this, adapter);
     }
-
-
 
 
 }
